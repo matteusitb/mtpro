@@ -126,39 +126,51 @@
 
     setupRevealOnScroll();
 
-    if (window.jQuery && window.jQuery.fn.owlCarousel) {
-        window.jQuery(".screenshot-slide").owlCarousel({
-            items: 4,
-            loop: true,
-            center: true,
-            margin: 20,
-            nav: true,
-            dots: false,
-            autoplay: false,
-            navText: ["<span>&larr;</span>", "<span>&rarr;</span>"],
-            responsive: {
-                0: { items: 1, margin: 0 },
-                768: { items: 2 },
-                992: { items: 3 },
-                1200: { items: 4 }
-            }
-        });
+    function setupNativeCarousels() {
+        var carousels = document.querySelectorAll("[data-carousel]");
 
-        window.jQuery(".testimonial-slide").owlCarousel({
-            items: 3,
-            loop: true,
-            nav: true,
-            dots: false,
-            margin: 20,
-            autoplay: true,
-            navText: ["<span>&larr;</span>", "<span>&rarr;</span>"],
-            responsive: {
-                0: { items: 1 },
-                768: { items: 2 },
-                1200: { items: 3 }
+        function updateButtons(viewport, prevButton, nextButton) {
+            var maxScroll = viewport.scrollWidth - viewport.clientWidth;
+            prevButton.disabled = viewport.scrollLeft <= 8;
+            nextButton.disabled = viewport.scrollLeft >= maxScroll - 8;
+        }
+
+        carousels.forEach(function (carousel) {
+            var viewport = carousel.querySelector(".native-carousel-viewport");
+            var prevButton = carousel.querySelector("[data-carousel-prev]");
+            var nextButton = carousel.querySelector("[data-carousel-next]");
+
+            if (!viewport || !prevButton || !nextButton) return;
+
+            function scrollByViewport(direction) {
+                var amount = Math.max(viewport.clientWidth * 0.86, 240);
+                viewport.scrollBy({
+                    left: amount * direction,
+                    behavior: "smooth"
+                });
             }
+
+            prevButton.addEventListener("click", function () {
+                scrollByViewport(-1);
+            });
+
+            nextButton.addEventListener("click", function () {
+                scrollByViewport(1);
+            });
+
+            viewport.addEventListener("scroll", function () {
+                updateButtons(viewport, prevButton, nextButton);
+            }, { passive: true });
+
+            window.addEventListener("resize", function () {
+                updateButtons(viewport, prevButton, nextButton);
+            });
+
+            updateButtons(viewport, prevButton, nextButton);
         });
     }
+
+    setupNativeCarousels();
 
     if (contactForm) {
         contactForm.addEventListener("submit", function (event) {
