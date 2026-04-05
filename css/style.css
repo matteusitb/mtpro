@@ -33,55 +33,6 @@ body.is-locked {
   overflow: hidden;
 }
 
-.container {
-  width: 100%;
-  max-width: 1140px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-.row > [class*="col-"] {
-  width: 100%;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.align-items-center { align-items: center; }
-
-@media (min-width: 768px) {
-  .container { max-width: 720px; }
-  .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-  .col-md-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
-  .col-md-6 { flex: 0 0 50%; max-width: 50%; }
-  .col-md-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
-  .col-md-12 { flex: 0 0 100%; max-width: 100%; }
-}
-
-@media (min-width: 992px) {
-  .container { max-width: 960px; }
-  .col-lg-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-  .col-lg-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
-  .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
-  .col-lg-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
-  .col-lg-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
-}
-
-@media (min-width: 1200px) {
-  .container { max-width: 1140px; }
-}
-
 img {
   max-width: 100%;
   display: block;
