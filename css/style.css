@@ -44,6 +44,33 @@ a {
   transition: 0.25s ease;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 4px rgba(38, 226, 142, 0.18);
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.reveal-soft {
+  transform: translate3d(0, 22px, 0);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -177,11 +204,25 @@ body.is-scrolled .brand-subtitle {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(38, 226, 142, 0.12) 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 14px 28px rgba(4, 10, 20, 0.18);
+  position: relative;
+  overflow: hidden;
 }
 
 .header-instagram-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 18px 32px rgba(4, 10, 20, 0.22);
+}
+
+.header-instagram-btn::after,
+.hero-download-btn::after,
+.price-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0.16) 45%, rgba(255, 255, 255, 0) 70%);
+  transform: translateX(-120%);
+  animation: ctaSweep 5.4s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .header-instagram-icon {
@@ -422,12 +463,12 @@ body.is-scrolled .header-instagram-meta {
 }
 
 .hero-download-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
   background:
     radial-gradient(circle at 0% 50%, rgba(38, 226, 142, 0.18) 0%, rgba(38, 226, 142, 0) 32%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(110deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0.14) 45%, rgba(255, 255, 255, 0) 70%);
+  transform: translateX(-120%);
+  animation: ctaSweep 5.2s ease-in-out infinite;
 }
 
 .hero-download-label,
@@ -622,6 +663,7 @@ body.is-scrolled .header-instagram-meta {
 .section-heading p {
   max-width: 760px;
   margin: 0 auto;
+  font-size: 17px;
 }
 
 .section-heading.left p {
@@ -650,6 +692,15 @@ body.is-scrolled .header-instagram-meta {
   transform: translateY(-4px);
   box-shadow: 0 18px 30px rgba(10, 20, 35, 0.12);
   border-color: rgba(38, 226, 142, 0.16);
+}
+
+.pricing-card,
+.testimonial-text,
+.contact-form-card,
+.contact-side-card,
+.feature-card,
+.about-card {
+  backface-visibility: hidden;
 }
 
 .feature-icon {
@@ -970,6 +1021,8 @@ body.is-scrolled .header-instagram-meta {
   background: linear-gradient(90deg, #0d2238 0%, #0f4a74 45%, #16b77a 100%);
   color: var(--white);
   box-shadow: 0 18px 28px rgba(9, 22, 38, 0.14);
+  position: relative;
+  overflow: hidden;
 }
 
 .premium-btn {
@@ -983,9 +1036,21 @@ body.is-scrolled .header-instagram-meta {
   transform: translateY(-2px);
 }
 
+.price-btn,
+.contact-submit,
+.mobile-download-btn,
+.mobile-instagram-btn,
+.whatsapp-icon-link,
+.header-instagram-btn,
+.hero-download-btn {
+  will-change: transform;
+}
+
 .testimonial-card {
   height: 100%;
   padding: 18px;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .testimonial-section {
@@ -1026,6 +1091,8 @@ body.is-scrolled .header-instagram-meta {
 
 .testimonial-text p {
   margin: 0;
+  font-size: 16px;
+  line-height: 1.8;
 }
 
 .testimonial-meta {
@@ -1045,15 +1112,38 @@ body.is-scrolled .header-instagram-meta {
   box-shadow: 0 12px 24px rgba(8, 19, 33, 0.12);
 }
 
+.testimonial-avatar {
+  width: 78px;
+  height: 78px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(38, 226, 142, 0.16) 0%, rgba(155, 210, 64, 0.18) 100%);
+  box-shadow: inset 0 0 0 1px rgba(24, 186, 121, 0.08), 0 12px 24px rgba(8, 19, 33, 0.08);
+}
+
+.testimonial-avatar img {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  object-fit: contain;
+  object-position: center;
+  box-shadow: none;
+}
+
 .meta-title {
   display: block;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  font-size: 18px;
 }
 
 .meta-content {
   display: block;
   font-size: 14px;
+  line-height: 1.5;
   color: var(--text-soft);
 }
 
@@ -1108,6 +1198,20 @@ body.is-scrolled .header-instagram-meta {
   margin-top: 20px;
   position: relative;
   z-index: 3;
+}
+
+.testimonial-slide .owl-stage {
+  display: flex;
+  align-items: stretch;
+}
+
+.testimonial-slide .owl-item {
+  opacity: 1 !important;
+}
+
+.testimonial-slide .owl-item .testimonial-card {
+  display: flex;
+  flex-direction: column;
 }
 
 .testimonial-slide .owl-controls .owl-nav .owl-prev,
@@ -1248,6 +1352,12 @@ body.is-scrolled .header-instagram-meta {
 .contact-side-item a {
   color: var(--green);
   font-weight: 600;
+}
+
+.owl-carousel .owl-controls .owl-nav .disabled,
+.owl-carousel .owl-nav .disabled {
+  opacity: 0.42 !important;
+  cursor: default !important;
 }
 
 .whatsapp-icon-link {
@@ -1418,6 +1528,11 @@ body.is-scrolled .header-instagram-meta {
   0% { box-shadow: 0 0 0 6px rgba(38, 226, 142, 0.12), 0 0 10px rgba(38, 226, 142, 0.34); }
   70% { box-shadow: 0 0 0 12px rgba(38, 226, 142, 0), 0 0 18px rgba(38, 226, 142, 0.5); }
   100% { box-shadow: 0 0 0 6px rgba(38, 226, 142, 0), 0 0 10px rgba(38, 226, 142, 0.34); }
+}
+
+@keyframes ctaSweep {
+  0%, 68%, 100% { transform: translateX(-120%); }
+  82% { transform: translateX(120%); }
 }
 
 @keyframes heroFloat {
@@ -1638,4 +1753,34 @@ body.is-scrolled .header-instagram-meta {
   .testimonial-text { min-height: auto; }
   .footer-menu ul { gap: 10px 18px; }
   .footer-brand-title { font-size: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-on-scroll.reveal-soft {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .header-instagram-btn::after,
+  .hero-download-btn::after,
+  .price-btn::after,
+  .hero-visual,
+  .featured-visual,
+  .whatsapp-icon-link {
+    animation: none !important;
+  }
+
+  .header-instagram-btn,
+  .hero-download-btn,
+  .price-btn,
+  .contact-submit,
+  .mobile-download-btn,
+  .mobile-instagram-btn,
+  .whatsapp-icon-link,
+  .feature-card,
+  .about-card {
+    transition: none !important;
+  }
 }

@@ -8,6 +8,18 @@
     var mobileLinks = document.querySelectorAll(".mobile-nav a");
     var desktopLinks = document.querySelectorAll(".desktop-nav a");
     var contactForm = document.getElementById("contact-whatsapp-form");
+    var revealTargets = [
+        ".section-heading",
+        ".about-card",
+        ".feature-card",
+        ".phone-shot",
+        ".pricing-card",
+        ".contact-form-card",
+        ".contact-side-card",
+        ".footer-brand",
+        ".footer-menu",
+        ".footer-note"
+    ];
 
     function setScrolledState() {
         body.classList.toggle("is-scrolled", window.scrollY > 12);
@@ -77,6 +89,42 @@
 
     window.addEventListener("scroll", setScrolledState, { passive: true });
     setScrolledState();
+
+    function setupRevealOnScroll() {
+        if (!("IntersectionObserver" in window)) {
+            return;
+        }
+
+        var elements = [];
+        revealTargets.forEach(function (selector) {
+            var found = document.querySelectorAll(selector);
+            found.forEach(function (element, index) {
+                element.classList.add("reveal-on-scroll");
+                if (selector === ".section-heading" || selector === ".footer-note") {
+                    element.classList.add("reveal-soft");
+                }
+                element.style.setProperty("--reveal-delay", ((index % 4) * 80) + "ms");
+                elements.push(element);
+            });
+        });
+
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+            });
+        }, {
+            threshold: 0.14,
+            rootMargin: "0px 0px -8% 0px"
+        });
+
+        elements.forEach(function (element) {
+            observer.observe(element);
+        });
+    }
+
+    setupRevealOnScroll();
 
     if (window.jQuery && window.jQuery.fn.owlCarousel) {
         window.jQuery(".screenshot-slide").owlCarousel({
